@@ -4,7 +4,7 @@
 
 #include <deque>
 
-#ifdef WIN32
+#if 1
 #include <windows.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <io.h>
-#else
+#elif 0
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
