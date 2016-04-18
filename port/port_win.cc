@@ -30,7 +30,9 @@
 
 #include "port/port_win.h"
 
+#define NOMINMAX
 #include <windows.h>
+#undef DeleteFile
 #include <cassert>
 
 namespace leveldb {
@@ -108,21 +110,28 @@ void CondVar::Signal() {
 }
 
 void CondVar::SignalAll() {
-  wait_mtx_.Lock();
-  ::ReleaseSemaphore(sem1_, waiting_, NULL);
-  while(waiting_ > 0) {
-    --waiting_;
-    ::WaitForSingleObject(sem2_, INFINITE);
-  }
-  wait_mtx_.Unlock();
+	wait_mtx_.Lock();
+	for (long i = 0; i < waiting_; ++i) {
+		::ReleaseSemaphore(sem1_, 1, NULL);
+		while (waiting_ > 0) {
+			--waiting_;
+			::WaitForSingleObject(sem2_, INFINITE);
+		}
+	}
+	wait_mtx_.Unlock();
 }
 
 AtomicPointer::AtomicPointer(void* v) {
   Release_Store(v);
 }
 
-void InitOnce(OnceType* once, void (*initializer)()) {
-  once->InitOnce(initializer);
+BOOL CALLBACK InitHandleFunction(PINIT_ONCE InitOnce, PVOID func, PVOID *lpContext) {
+	((void(*)())func)();
+	return true;
+}
+
+void InitOnce(OnceType* once, void(*initializer)()) {
+	InitOnceExecuteOnce((PINIT_ONCE)once, InitHandleFunction, initializer, NULL);
 }
 
 void* AtomicPointer::Acquire_Load() const {

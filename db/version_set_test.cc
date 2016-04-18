@@ -48,7 +48,7 @@ class FindFileTest {
   }
 };
 
-TEST(FindFileTest, Empty) {
+TEST(FindFileTest, EmptyVersion) {
   ASSERT_EQ(0, Find("foo"));
   ASSERT_TRUE(! Overlaps("a", "z"));
   ASSERT_TRUE(! Overlaps(NULL, "z"));
@@ -174,6 +174,8 @@ TEST(FindFileTest, OverlappingFiles) {
 
 }  // namespace leveldb
 
+#ifndef LEVELDB_PLATFORM_WINDOWS
 int main(int argc, char** argv) {
   return leveldb::test::RunAllTests();
 }
+#endif

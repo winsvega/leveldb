@@ -645,7 +645,7 @@ class Harness {
 };
 
 // Test empty table/block.
-TEST(Harness, Empty) {
+TEST(Harness, EmptyTable) {
   for (int i = 0; i < kNumTestArgs; i++) {
     Init(kTestArgList[i]);
     Random rnd(test::RandomSeed() + 1);
@@ -863,6 +863,8 @@ TEST(TableTest, ApproximateOffsetOfCompressed) {
 
 }  // namespace leveldb
 
+#ifndef LEVELDB_PLATFORM_WINDOWS
 int main(int argc, char** argv) {
   return leveldb::test::RunAllTests();
 }
+#endif

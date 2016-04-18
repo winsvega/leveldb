@@ -15,6 +15,10 @@ namespace leveldb {
 // Update Makefile if you change these
 static const int kMajorVersion = 1;
 static const int kMinorVersion = 18;
+#define LEVELDB_VERSION_MAJOR 1
+#define LEVELDB_VERSION_MINOR 18
+#define LEVELDB_VERSION_PATCH 0
+#define LEVELDB_VERSION_STRING "1.18.0.0"
 
 struct Options;
 struct ReadOptions;

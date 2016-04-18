@@ -11,11 +11,11 @@ namespace leveldb {
 
 class ArenaTest { };
 
-TEST(ArenaTest, Empty) {
+TEST(ArenaTest, EmptyArena) {
   Arena arena;
 }
 
-TEST(ArenaTest, Simple) {
+TEST(ArenaTest, SimpleArena) {
   std::vector<std::pair<size_t, char*> > allocated;
   Arena arena;
   const int N = 100000;
@@ -63,6 +63,8 @@ TEST(ArenaTest, Simple) {
 
 }  // namespace leveldb
 
+#ifndef LEVELDB_PLATFORM_WINDOWS
 int main(int argc, char** argv) {
   return leveldb::test::RunAllTests();
 }
+#endif

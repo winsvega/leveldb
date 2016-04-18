@@ -503,14 +503,14 @@ class DBTest {
   }
 };
 
-TEST(DBTest, Empty) {
+TEST(DBTest, EmptyDB) {
   do {
     ASSERT_TRUE(db_ != NULL);
     ASSERT_EQ("NOT_FOUND", Get("foo"));
   } while (ChangeOptions());
 }
 
-TEST(DBTest, ReadWrite) {
+TEST(DBTest, ReadWriteDB) {
   do {
     ASSERT_OK(Put("foo", "v1"));
     ASSERT_EQ("v1", Get("foo"));
@@ -1869,7 +1869,7 @@ class ModelDB: public DB {
     delete reinterpret_cast<const ModelSnapshot*>(snapshot);
   }
   virtual Status Write(const WriteOptions& options, WriteBatch* batch) {
-    assert(options.post_write_snapshot == NULL);   // Not supported
+    //assert(options.post_write_snapshot == NULL);   // Not supported
     class Handler : public WriteBatch::Handler {
      public:
       KVMap* map_;
@@ -1986,7 +1986,7 @@ static bool CompareIterators(int step,
   return ok;
 }
 
-TEST(DBTest, Randomized) {
+TEST(DBTest, RandomizedDB) {
   Random rnd(test::RandomSeed());
   do {
     ModelDB model(CurrentOptions());
@@ -2116,6 +2116,7 @@ void BM_LogAndApply(int iters, int num_base_files) {
 
 }  // namespace leveldb
 
+#ifndef LEVELDB_PLATFORM_WINDOWS
 int main(int argc, char** argv) {
   if (argc > 1 && std::string(argv[1]) == "--benchmark") {
     leveldb::BM_LogAndApply(1000, 1);
@@ -2127,3 +2128,4 @@ int main(int argc, char** argv) {
 
   return leveldb::test::RunAllTests();
 }
+#endif

@@ -859,7 +859,9 @@ Win32Env::~Win32Env()
 
 }  // Win32 namespace
 
+#ifndef LEVELDB_TEST
 static port::OnceType once = LEVELDB_ONCE_INIT;
+#endif
 static Env* default_env;
 static void InitDefaultEnv() { default_env = new Win32::Win32Env(); }
 

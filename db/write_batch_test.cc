@@ -54,13 +54,13 @@ static std::string PrintContents(WriteBatch* b) {
 
 class WriteBatchTest { };
 
-TEST(WriteBatchTest, Empty) {
+TEST(WriteBatchTest, EmptyBatch) {
   WriteBatch batch;
   ASSERT_EQ("", PrintContents(&batch));
   ASSERT_EQ(0, WriteBatchInternal::Count(&batch));
 }
 
-TEST(WriteBatchTest, Multiple) {
+TEST(WriteBatchTest, MultipleBatch) {
   WriteBatch batch;
   batch.Put(Slice("foo"), Slice("bar"));
   batch.Delete(Slice("box"));
@@ -115,6 +115,8 @@ TEST(WriteBatchTest, Append) {
 
 }  // namespace leveldb
 
+#ifndef LEVELDB_PLATFORM_WINDOWS
 int main(int argc, char** argv) {
   return leveldb::test::RunAllTests();
 }
+#endif
